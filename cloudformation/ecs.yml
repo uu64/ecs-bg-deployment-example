@@ -7,10 +7,6 @@ Parameters:
     Type: 'AWS::EC2::Subnet::Id'
   CSubnetId:
     Type: 'AWS::EC2::Subnet::Id'
-  ASecurityGroupId:
-    Type: 'AWS::EC2::SecurityGroup::Id'
-  CSecurityGroupId:
-    Type: 'AWS::EC2::SecurityGroup::Id'
 Transform:
   - 'AWS::CodeDeployBlueGreen'
 Hooks:
@@ -41,6 +37,24 @@ Hooks:
                 - ALBTargetGroupGreen
     Type: 'AWS::CodeDeploy::BlueGreen'
 Resources:
+  ExampleSecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: Security group for ec2 access
+      VpcId: !Ref VpcId
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 8080
+          ToPort: 8080
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
   ALBTargetGroupBlue:
     Type: 'AWS::ElasticLoadBalancingV2::TargetGroup'
     Properties:
@@ -84,8 +98,7 @@ Resources:
     Properties:
       Scheme: internet-facing
       SecurityGroups:
-        - !Ref ASecurityGroupId
-        - !Ref CSecurityGroupId
+        - !Ref ExampleSecurityGroup
       Subnets:
         - !Ref ASubnetId
         - !Ref CSubnetId
@@ -175,8 +188,7 @@ Resources:
         AwsVpcConfiguration:
           AssignPublicIp: ENABLED
           SecurityGroups:
-            - !Ref ASecurityGroupId
-            - !Ref CSecurityGroupId
+            - !Ref ExampleSecurityGroup
           Subnets:
             - !Ref ASubnetId
             - !Ref CSubnetId

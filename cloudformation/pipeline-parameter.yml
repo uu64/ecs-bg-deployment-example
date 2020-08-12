@@ -6,6 +6,8 @@ Parameters:
   ParameterValue: 'master'
 - ParameterKey: 'EcsStackName'
   ParameterValue: ''
+- ParameterKey: 'CodeBuildServiceRoleArn'
+  ParameterValue: ''
 - ParameterKey: 'CodePipelineServiceRoleArn'
   ParameterValue: ''
 - ParameterKey: 'CloudFormationServiceRoleArn'

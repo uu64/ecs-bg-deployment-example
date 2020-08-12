@@ -7,6 +7,8 @@ Parameters:
     Type: String
   EcsStackName:
     Type: String
+  CodeBuildServiceRoleArn:
+    Type: String
   CodePipelineServiceRoleArn:
     Type: String
   CloudFormationServiceRoleArn:
@@ -90,7 +92,7 @@ Resources:
     Type: AWS::CodeBuild::Project
     Properties:
       Name: !Join [ '-', [ !Ref 'AWS::StackName', 'build' ] ]
-      ServiceRole: !ImportValue 'iam-roles-CodeBuildRoleArn'
+      ServiceRole: !Ref CodeBuildServiceRoleArn
       Artifacts:
         Type: CODEPIPELINE
       Environment:
