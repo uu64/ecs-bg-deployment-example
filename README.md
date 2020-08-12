@@ -2,7 +2,7 @@
 
 ## Set up
 
-Create AWS CodeCommit repository and copy all files in this repository to new repository.
+Create a new AWS CodeCommit repository and copy all files from this repository to the new one.
 
 Set parameters in the following file.
 
