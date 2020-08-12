@@ -2,6 +2,8 @@
 
 ## Set up
 
+Create AWS CodeCommit repository and copy all files in this repository to new repository.
+
 Set parameters in the following file.
 
 - `cloudformation/ecs-parameter.yml`
