@@ -11,11 +11,15 @@ Set parameters in the following file.
 Create a ecs sample app stack.
 
 ```
-aws cloudformation create-stack --template-body file://./ecs.yml --cli-input-yaml file://./ecs-parameter.yml
+aws cloudformation create-stack \
+  --template-body file://./cloudformation/ecs.yml \
+  --cli-input-yaml file://./cloudformation/ecs-parameter.yml
 ```
 
 Create a pipeline stack.
 
 ```
-aws cloudformation create-stack --template-body file://./pipeline.yml --cli-input-yaml file://./pipeline-parameter.yml
+aws cloudformation create-stack \
+  --template-body file://./cloudformation/pipeline.yml \
+  --cli-input-yaml file://./cloudformation/pipeline-parameter.yml
 ```
