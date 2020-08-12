@@ -1,0 +1,15 @@
+StackName: 'ecs-bg-deployment-cfn-app'
+Parameters:
+- ParameterKey: 'VpcId'
+  ParameterValue: ''
+- ParameterKey: 'ASubnetId'
+  ParameterValue: ''
+- ParameterKey: 'CSubnetId'
+  ParameterValue: ''
+- ParameterKey: 'ASecurityGroupId'
+  ParameterValue: ''
+- ParameterKey: 'CSecurityGroupId'
+  ParameterValue: ''
+Capabilities:
+  - CAPABILITY_AUTO_EXPAND
+  - CAPABILITY_IAM
