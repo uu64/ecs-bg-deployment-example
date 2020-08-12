@@ -2,8 +2,6 @@
   "Parameters": {
     "VpcId": "",
     "ASubnetId": "",
-    "CSubnetId": "",
-    "ASecurityGroupId": "",
-    "CSecurityGroupId": ""
+    "CSubnetId": ""
   }
 }
