@@ -1,0 +1,23 @@
+{
+  "executionRoleArn": "",
+  "containerDefinitions": [
+      {
+          "name": "demo-app",
+          "image": "nginxdemos/hello:latest",
+          "essential": true,
+          "portMappings": [
+              {
+                  "protocol": "tcp",
+                  "containerPort": 80
+              }
+          ]
+      }
+  ],
+  "requiresCompatibilities": [
+      "FARGATE"
+  ],
+  "networkMode": "awsvpc",
+  "cpu": "256",
+  "memory": "512",
+  "family": "demo-app"
+}

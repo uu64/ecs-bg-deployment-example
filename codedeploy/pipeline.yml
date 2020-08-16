@@ -1,0 +1,102 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: CI/CD pipeline for ECS Blue/Green deployment sample using cloudformation.
+Parameters:
+  RepositoryName:
+    Type: String
+  BranchName:
+    Type: String
+  EcsStackName:
+    Type: String
+  CodeBuildServiceRoleArn:
+    Type: String
+  CodePipelineServiceRoleArn:
+    Type: String
+  CloudFormationServiceRoleArn:
+    Type: String
+Resources:
+  Pipeline:
+    Type: AWS::CodePipeline::Pipeline
+    Properties:
+      ArtifactStore:
+        Type: S3
+        Location: !Ref ArtifactStore
+      Name: !Ref 'AWS::StackName'
+      RoleArn: !Ref CodePipelineServiceRoleArn
+      Stages:
+        - Name: Source
+          Actions:
+            - Name: Source
+              ActionTypeId:
+                Category: Source
+                Owner: AWS
+                Version: '1'
+                Provider: CodeCommit
+              OutputArtifacts:
+                - Name: source
+              Configuration:
+                RepositoryName: !Ref RepositoryName
+                BranchName: master
+              RunOrder: 1
+        - Name: Build
+          Actions:
+            - Name: Build
+              InputArtifacts:
+                - Name: source
+              ActionTypeId:
+                Category: Build
+                Owner: AWS
+                Version: "1"
+                Provider: CodeBuild
+              Configuration:
+                ProjectName: !Ref BuildProject
+              OutputArtifacts:
+                - Name: build
+              RunOrder: 1
+        - Name: Release
+          Actions:
+            - Name: Release
+              InputArtifacts:
+                - Name: build
+              ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Version: '1'
+                Provider: CodeDeployToECS
+              Configuration:
+                ApplicationName: tutorial-bluegreen-app
+                DeploymentGroupName: tutorial-bluegreen-dg
+                TaskDefinitionTemplateArtifact: build
+                TaskDefinitionTemplatePath: codedeploy/taskdef.json
+                AppSpecTemplateArtifact: build
+                AppSpecTemplatePath: codedeploy/appspec.yml
+                Image1ArtifactName: build
+                Image1ContainerName: IMAGE1_NAME
+              RunOrder: 1
+  BuildProject:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Name: !Join [ '-', [ !Ref 'AWS::StackName', 'build' ] ]
+      ServiceRole: !Ref CodeBuildServiceRoleArn
+      Artifacts:
+        Type: CODEPIPELINE
+      Environment:
+        Type: LINUX_CONTAINER
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: aws/codebuild/amazonlinux2-x86_64-standard:3.0
+        ImagePullCredentialsType: CODEBUILD
+        EnvironmentVariables:
+          - Name: branch_name
+            Value: !Ref BranchName
+      Source:
+        Type: CODEPIPELINE
+        BuildSpec: codedeploy/buildspec.yml
+  ArtifactStore:
+    Type: AWS::S3::Bucket
+    UpdateReplacePolicy: Retain
+    DeletionPolicy: Retain
+    Properties:
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: True
+        BlockPublicPolicy: True
+        IgnorePublicAcls: True
+        RestrictPublicBuckets: True

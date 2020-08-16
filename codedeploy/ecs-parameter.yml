@@ -1,0 +1,11 @@
+StackName: 'ecs-bg-deployment-deploy-app'
+Parameters:
+- ParameterKey: 'VpcId'
+  ParameterValue: ''
+- ParameterKey: 'ASubnetId'
+  ParameterValue: ''
+- ParameterKey: 'CSubnetId'
+  ParameterValue: ''
+Capabilities:
+  - CAPABILITY_AUTO_EXPAND
+  - CAPABILITY_IAM
