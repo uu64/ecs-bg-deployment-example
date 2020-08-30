@@ -85,8 +85,6 @@ Resources:
                 StackName: !Ref EcsStackName
                 Capabilities: CAPABILITY_AUTO_EXPAND,CAPABILITY_IAM
                 ChangeSetName: update
-                TemplatePath: 'build::cloudformation/ecs.yml'
-                TemplateConfiguration: 'build::cloudformation/stack-config.json'
               RunOrder: 1
   BuildProject:
     Type: AWS::CodeBuild::Project
