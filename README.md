@@ -10,7 +10,7 @@ Set parameters in the following file.
 
 - `cloudformation/ecs-parameter.yml`
 - `cloudformation/pipeline-parameter.yml`
-- `cloudformation/stack-config.yml`
+- `cloudformation/stack-config.json`
 
 Create a ecs sample app stack.
 
